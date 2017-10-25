@@ -28,6 +28,11 @@ class UserController extends Controller {
       ]]);
     }
 
+    public function testShit() {
+      return $this; 
+      // return $this->hasMany('issues');
+    }
+
   /**
    * Delete user from database.
    * @param userID
