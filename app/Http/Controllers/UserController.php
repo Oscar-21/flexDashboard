@@ -138,7 +138,7 @@ class UserController extends Controller {
 
     if ((!empty($phoneNumber)) 
       && (is_numeric($phoneNumber)) 
-      && (count(str_split($phoneNumber)) == 7))
+      && (count(str_split($phoneNumber)) == 10))
       {
         $user->phoneNumber = $phoneNumber;
       } 

@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -s http://localhost:8000/api/newspace --F '{"name":"zubhouse","city":"zustin","address":"123 zwang St", "state":"ZX", "zipcode":"10904", "phone_number":"3333333", "description":"zdescription","email":"zzue@mail.com","website":"site","userID":"10","roleID":"2"}' --header 'Content-Type: application/json'
+

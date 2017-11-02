@@ -1,0 +1,1 @@
+curl -X GET "http://localhost:8000/api/d1" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjc1MSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0OjgwMDBcL2FwaVwvbG9naW4iLCJpYXQiOjE1MDkzOTE4MDEsImV4cCI6MTUwOTM5NTQwMSwibmJmIjoxNTA5MzkxODAxLCJqdGkiOiI4NDIzYmI1MDNmYzZhY2ZmNWJmNzgxMzkzZWZmMGEwMiJ9.-LxvFYt2Ue2sgNPBt7yj0HSN-C2Xnfyw2E2C4qySSkY"

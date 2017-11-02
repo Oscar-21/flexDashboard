@@ -1,0 +1,1 @@
+curl -X GET "https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj" -H "Authorization: Bearer BQBIzm8ErBPOKPakrR-SpgdjpN9eSVw5YA-RNdpg2c4rDJBtK_d2ly7Ske7fxhQ5Hy2FLtLAiTvmVvnrrPC_GMdYH4fB6qJTQtDfgu_VvychL457sW3Yq2lMXzqLwbtBCE76qDtoM9EcSwRh7omiiaHycOUGLQYq7uT11ANjFA"

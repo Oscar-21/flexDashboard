@@ -14,8 +14,14 @@ use Illuminate\Http\Request;
 |
 */
 
+// DashboardController
+Route::get('baz', 'DashboardController@baz');
+Route::get('db/wtf/{spaceId}', 'DashboardController@wtf');
+Route::get('db/Joins/{spaceId}', 'DashboardController@Joins');
+Route::get('db/appearances/{spaceId}', 'DashboardController@Appearances');
+
 // AuthController
-Route::post('signUp', 'AuthController@signUp');   // sign up
+Route::post('signUp', 'AuthController@signUp');  // sign up
 Route::post('login', 'AuthController@signIn');  // login
 Route::post('getusers', 'AuthController@getUsers');  // admin get users 
 Route::get('ban/{id}', 'AuthController@ban'); // ban user.id

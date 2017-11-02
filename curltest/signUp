@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -s http://localhost:8000/api/signUp --data '{"name":"doo","email":"doo@mail.com","password":"password", "spaceID":"2", "searchOpt":"1", "skill":"one,five,six"}' --header 'Content-Type: application/json'
+
