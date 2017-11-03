@@ -32,31 +32,31 @@ student.TS_AS_XTS <- as.xts(student.TS)
 ```
 Row {.tabset .tabset-fade}
 -------------------------------------
-### all!
+### alls!
 ```{r}
 dygraph(allTS_AS_XTS) %>%
 dyOptions(drawPoints = TRUE, pointSize = 2) %>%
 dyRangeSelector()
 ```
-### event!
+### events!
 ```{r}
 dygraph(eventTS_AS_XTS) %>%
 dyOptions(drawPoints = TRUE, pointSize = 2) %>%
 dyRangeSelector()
 ```
-### work!
+### works!
 ```{r}
 dygraph(workTS_AS_XTS) %>%
 dyOptions(drawPoints = TRUE, pointSize = 2) %>%
 dyRangeSelector()
 ```
-### booking!
+### bookings!
 ```{r}
 dygraph(bookingTS_AS_XTS) %>%
 dyOptions(drawPoints = TRUE, pointSize = 2) %>%
 dyRangeSelector()
 ```
-### student!
+### students!
 ```{r}
 dygraph(studentTS_AS_XTS) %>%
 dyOptions(drawPoints = TRUE, pointSize = 2) %>%

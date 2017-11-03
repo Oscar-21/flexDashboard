@@ -82,12 +82,10 @@ class RMarkdownService {
         } 
         // on last call  
         else if ($count === $limit) {
-            $row = 
+            $all = 
             "```\n"
             ."Row {.tabset .tabset-fade}\n"
             ."-------------------------------------\n";
-
-            $all = 
             "### All appearances\n"
             ."```{r}\n"
             ."dygraph(allTS_AS_XTS) %>%\n"
@@ -99,47 +97,15 @@ class RMarkdownService {
 
             foreach ($KEYS as $KEY ) {
                 $occasions .=                 
-                "### {$KEY}\n"
+                "### {$KEY}s!\n"
                 ."```{r}\n"
                 ."dygraph({$KEY}TS_AS_XTS) %>%\n"
                 ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
                 ."dyRangeSelector()\n"
                 ."```\n";
             }
-            
-            // $work =
-            // "### Work\n" 
-            // ."```{r}\n"
-            // ."dygraph(workTS_AS_XTS) %>%\n"
-            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
-            // ."dyRangeSelector()\n"
-            // ."```\n";
-           
-            // $bookings =
-            // "### Bookings\n" 
-            // ."```{r}\n"
-            // ."dygraph(bookingsTS_AS_XTS) %>%\n"
-            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
-            // ."dyRangeSelector()\n"
-            // ."```\n";
-            
-            // $students =
-            // "### Students\n" 
-            // ."```{r}\n"
-            // ."dygraph(studentsTS_AS_XTS) %>%\n"
-            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
-            // ."dyRangeSelector()\n"
-            // ."```\n";
-            
-            // $invites = 
-            // "### Invites\n"
-            // ."```{r}\n"
-            // ."dygraph(invitesTS_AS_XTS) %>%\n"
-            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
-            // ."dyRangeSelector()\n"
-            // ."```\n";
 
-        $appendString = $row.$occasions;
+        $appendString = $all.$occasions;
         fwrite($fp, $appendString, strlen($appendString));
 
         }
