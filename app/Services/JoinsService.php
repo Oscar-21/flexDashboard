@@ -26,6 +26,7 @@ class JoinsService {
             $yearSpan = (int)$lastYear - (int)$firstYear;
 
             $joins = array();
+            // $res = array();
             for ($year = 0; $year <= $yearSpan; $year++) {
                 for ($month = 1; $month <= 12; $month++) {
                     $joinsForMonth = count(User::
@@ -34,17 +35,24 @@ class JoinsService {
                                          ->whereMonth('created_at', ( $month ) )
                                          ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) array_push($joins, $joinsForMonth);
+                    if ( !empty($joinsForMonth) )  {
+                        array_push($joins, $joinsForMonth);
+                    }
                 }        
             }
-            array_push(
-                $joins, 
-                $firstYear, 
-                $lastYear, 
-                $firstMonth,
-                $lastMonth 
+            // array_push(
+                // $res,
+            return (
+                array (
+                    'memberSignUpData' => $joins,
+                    'firstYear' => $firstYear, 
+                    'lastYear' => $lastYear, 
+                    'firstMonth' => $firstMonth,
+                    'lastMonth' => $lastMonth 
+                )
             );
-            return $joins;
+            // );
+            return $res;
         }
     }
 }

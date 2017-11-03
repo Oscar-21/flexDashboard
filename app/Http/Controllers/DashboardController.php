@@ -43,13 +43,25 @@ class DashBoardController extends Controller {
      * JOINS
      */
     public function Joins($spaceId) {
-        $memberSignUpData = $this->joinsService->spaceUserJoins($spaceId);
-        $n = count($memberSignUpData);
-        $sortedMemberData = array_slice($memberSignUpData, 0, ($n - 5));
-        $firstYear = $memberSignUpData[$n - 4]; 
-        $lastYear = $memberSignUpData[$n - 3];
-        $firstMonth = $memberSignUpData[$n - 2];
-        $lastMonth = $memberSignUpData[$n - 1];
+        $dataAndDates = $this->joinsService->spaceUserJoins($spaceId);
+        $sortedMemberData = $dataAndDates['memberSignUpData'];
+
+        $firstYear = $dataAndDates['firstYear']; 
+        $lastYear = $dataAndDates['lastYear']; 
+
+        $firstMonth = $dataAndDates['firstMonth']; 
+        $lastMonth = $dataAndDates['lastMonth']; 
+
+        // $lastYear = $memberSignUpData[$n - 3];
+        // $firstMonth = $memberSignUpData[$n - 2];
+        // $lastMonth = $memberSignUpData[$n - 1];
+
+        // $n = count($memberSignUpData);
+        // $sortedMemberData = array_slice($memberSignUpData, 0, ($n - 5));
+        // $firstYear = $memberSignUpData[$n - 4]; 
+        // $lastYear = $memberSignUpData[$n - 3];
+        // $firstMonth = $memberSignUpData[$n - 2];
+        // $lastMonth = $memberSignUpData[$n - 1];
 
         $this->rmarkdownService->generateMemberJoinsRmd(
           $firstYear, 

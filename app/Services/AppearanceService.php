@@ -30,7 +30,9 @@ class AppearanceService {
                                            ->whereMonth('created_at', ( $month ) )
                                            ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) array_push($res, $joinsForMonth);
+                    if ( !empty($joinsForMonth) ) { 
+                        array_push($res, $joinsForMonth);
+                    }
                 }        
             }
             array_push(
@@ -75,7 +77,9 @@ class AppearanceService {
                                            ->whereMonth('created_at', ( $month ) )
                                            ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) array_push($res, $joinsForMonth);
+                    if ( !empty($joinsForMonth) ) {
+                        array_push($res, $joinsForMonth);
+                    }
                 }        
             }
             array_push(
@@ -117,7 +121,9 @@ class AppearanceService {
                                           ->whereMonth('created_at', ( $month ) )
                                           ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) array_push($res, $joinsForMonth);
+                    if ( !empty($joinsForMonth) ) { 
+                        array_push($res, $joinsForMonth);
+                    }
                 }        
             }
             array_push(

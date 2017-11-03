@@ -101,7 +101,7 @@ class RMarkdownService {
         // R markdown formatted string
         $outputString = 
             "---\n"
-            ."title: \"Oscar Sign ups {$firstYear}-{$lastYear}\""
+            ."title: \"Dude Sign ups {$firstYear}-{$lastYear}\""
             ."\noutput:\n" 
             ."  flexdashboard::flex_dashboard:\n"
             ."    orientation: rows\n"
