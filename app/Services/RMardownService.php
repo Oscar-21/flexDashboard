@@ -58,7 +58,9 @@ class RMarkdownService {
         $appearances, 
         $key,
         $limit
-    ) {
+    ) 
+
+    {
         // Open RMarkdown file to append
         $fp = fopen("$this->documentRoot/test/bar.Rmd", 'ab');
 
@@ -83,6 +85,48 @@ class RMarkdownService {
         }
         fclose($fp);
     }    
+
+    /**
+     * Generate member signup data graph
+     */
+    public function generateMemberJoinsRmd(
+        $firstYear, 
+        $lastYear, 
+        $firstMonth, 
+        $lastMonth, 
+        $joins
+    ) {
+        $fp = fopen("$this->documentRoot/test/foo.Rmd", 'wb');
+
+        // R markdown formatted string
+        $outputString = 
+            "---\n"
+            ."title: \"Oscar Sign ups {$firstYear}-{$lastYear}\""
+            ."\noutput:\n" 
+            ."  flexdashboard::flex_dashboard:\n"
+            ."    orientation: rows\n"
+            ."    social: menu\n"
+            ."---\n\n"
+            ."```{r setup, include=FALSE}\n"
+            ."library(flexdashboard)\n"
+            ."library(dygraphs)\n"
+            ."library(xts)\n"
+            ."joinsByMonthYear <-" 
+            ." c(".$this->extractDataFromArray($joins).")\n"
+            ."joinTS <- ts( joinsByMonthYear, start= c({$firstYear},{$firstMonth}), end= c({$lastYear},{$lastMonth}), frequency = 12)\n"
+            ."joinTS_AS_XTS <- as.xts(joinTS)\n"
+            ."```\n"
+            ."Row {.tabset .tabset-fade}\n"
+            ."-------------------------------------\n"
+            ."### All incubators\n"
+            ."```{r}\n"
+            ."dygraph(joinTS_AS_XTS) %>%\n" 
+            ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            ."dyRangeSelector()\n"  
+            ."```\n";
+        fwrite($fp, $outputString, strlen($outputString) );
+        fclose($fp);
+    }
 
    // extract and format values from array to print in an R array c(1,2,3,4....)
    private function extractDataFromArray($data) {
