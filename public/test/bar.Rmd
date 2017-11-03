@@ -1,5 +1,5 @@
 ---
-title: "wtf"
+title: "Appearances!"
 output:
 flexdashboard::flex_dashboard:
     orientation: rows
@@ -29,4 +29,36 @@ student.ByMonthYear <- c(4,7,4,8,6,6,4,4,6,6,4,7,4,5,5,4,6,6,2,5,6,4,8,2,8,8,9,9
 student.TS <- ts( student.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
 student.TS_AS_XTS <- as.xts(student.TS)
 
+```
+Row {.tabset .tabset-fade}
+-------------------------------------
+### all!
+```{r}
+dygraph(allTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### event!
+```{r}
+dygraph(eventTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### work!
+```{r}
+dygraph(workTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### booking!
+```{r}
+dygraph(bookingTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### student!
+```{r}
+dygraph(studentTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
 ```

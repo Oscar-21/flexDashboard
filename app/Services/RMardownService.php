@@ -65,6 +65,7 @@ class RMarkdownService {
         $fp = fopen("$this->documentRoot/test/bar.Rmd", 'ab');
 
         static $count; // to keep track of function calls
+        static $KEYS = [];
 
         if ($count !== $limit) {
             // insert data into R script for each occasion
@@ -74,14 +75,73 @@ class RMarkdownService {
             ."$key.TS_AS_XTS <- as.xts($key.TS)\n\n";
 
             $count++;
+            array_push($KEYS, $key);
 
             // append R script to file 
             fwrite($fp, $appendString, strlen($appendString));
         } 
-        // on last function call 
+        // on last call  
         else if ($count === $limit) {
-            // end R script
-            fwrite($fp, "```\n", strlen("```\n") );
+            $row = 
+            "```\n"
+            ."Row {.tabset .tabset-fade}\n"
+            ."-------------------------------------\n";
+
+            $all = 
+            "### All appearances\n"
+            ."```{r}\n"
+            ."dygraph(allTS_AS_XTS) %>%\n"
+            ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            ."dyRangeSelector()\n"
+            ."```\n";
+
+            $occasions = "";
+
+            foreach ($KEYS as $KEY ) {
+                $occasions .=                 
+                "### {$KEY}\n"
+                ."```{r}\n"
+                ."dygraph({$KEY}TS_AS_XTS) %>%\n"
+                ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+                ."dyRangeSelector()\n"
+                ."```\n";
+            }
+            
+            // $work =
+            // "### Work\n" 
+            // ."```{r}\n"
+            // ."dygraph(workTS_AS_XTS) %>%\n"
+            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            // ."dyRangeSelector()\n"
+            // ."```\n";
+           
+            // $bookings =
+            // "### Bookings\n" 
+            // ."```{r}\n"
+            // ."dygraph(bookingsTS_AS_XTS) %>%\n"
+            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            // ."dyRangeSelector()\n"
+            // ."```\n";
+            
+            // $students =
+            // "### Students\n" 
+            // ."```{r}\n"
+            // ."dygraph(studentsTS_AS_XTS) %>%\n"
+            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            // ."dyRangeSelector()\n"
+            // ."```\n";
+            
+            // $invites = 
+            // "### Invites\n"
+            // ."```{r}\n"
+            // ."dygraph(invitesTS_AS_XTS) %>%\n"
+            // ."dyOptions(drawPoints = TRUE, pointSize = 2) %>%\n"
+            // ."dyRangeSelector()\n"
+            // ."```\n";
+
+        $appendString = $row.$occasions;
+        fwrite($fp, $appendString, strlen($appendString));
+
         }
         fclose($fp);
     }    
@@ -94,14 +154,14 @@ class RMarkdownService {
         $lastYear, 
         $firstMonth, 
         $lastMonth, 
-        $joins
+        $data
     ) {
         $fp = fopen("$this->documentRoot/test/foo.Rmd", 'wb');
 
         // R markdown formatted string
         $outputString = 
             "---\n"
-            ."title: \"Dude Sign ups {$firstYear}-{$lastYear}\""
+            ."title: \"Member sign ups from {$firstYear} to {$lastYear}\""
             ."\noutput:\n" 
             ."  flexdashboard::flex_dashboard:\n"
             ."    orientation: rows\n"
@@ -112,7 +172,7 @@ class RMarkdownService {
             ."library(dygraphs)\n"
             ."library(xts)\n"
             ."joinsByMonthYear <-" 
-            ." c(".$this->extractDataFromArray($joins).")\n"
+            ." c(".$this->extractDataFromArray($data).")\n"
             ."joinTS <- ts( joinsByMonthYear, start= c({$firstYear},{$firstMonth}), end= c({$lastYear},{$lastMonth}), frequency = 12)\n"
             ."joinTS_AS_XTS <- as.xts(joinTS)\n"
             ."```\n"
@@ -132,7 +192,7 @@ class RMarkdownService {
    private function extractDataFromArray($data) {
         $extractedData = "";
         foreach ($data as $datum) {
-            // format 1,2,3,...
+            // format from [1,2,3...n] to 1,2,3,...n
             $extractedData = ltrim($extractedData.','.$datum, ',');
         }
         return $extractedData;

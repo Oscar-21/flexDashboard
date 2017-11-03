@@ -16,48 +16,36 @@ use App\Appearance;
 
 class DashBoardController extends Controller {
 
-    // Inherited Classes
     protected $appearanceService;
     protected $joinsService;
     protected $rmarkdownService;
-
-
-    /**
-     * Constructor
-     */
+    
     public function __construct(
         AppearanceService $appearanceService, 
         JoinsService $joinsService,
         RMarkdownService $rmarkdownService 
     ) 
     {
-
-        // Inherited Classes
         $this->appearanceService = $appearanceService;
         $this->joinsService = $joinsService;
         $this->rmarkdownService = $rmarkdownService;
-
     }
 
     /**
-     * JOINS
+     * Generate Member Sign up data visualizations using RMarkdown 
+     * @param $spaceId
+     * @return Illuminate\Support\Facades\Response::class
      */
     public function Joins($spaceId) {
         $dataAndDates = $this->joinsService->spaceUserJoins($spaceId);
-        $sortedMemberData = $dataAndDates['memberSignUpData'];
 
-        $firstYear = $dataAndDates['firstYear']; 
-        $lastYear = $dataAndDates['lastYear']; 
-
-        $firstMonth = $dataAndDates['firstMonth']; 
-        $lastMonth = $dataAndDates['lastMonth']; 
-
+        // insert data and dates into R Markdown File
         $this->rmarkdownService->generateMemberJoinsRmd(
-          $firstYear, 
-          $lastYear, 
-          $firstMonth, 
-          $lastMonth, 
-          $sortedMemberData
+            $dataAndDates['firstYear'],
+            $dataAndDates['lastYear'],
+            $dataAndDates['firstMonth'], 
+            $dataAndDates['lastMonth'],
+            $dataAndDates['memberSignUpData']
         );
     }
 
@@ -69,7 +57,7 @@ class DashBoardController extends Controller {
     public function Appearances($spaceId) {
 
         // Write head of RMarkdown File
-        $this->rmarkdownService->generateTitle("Appearances");
+        $this->rmarkdownService->generateTitle("Appearances!");
 
         // Get appearances from database by occasion
         $appearances = array(
@@ -83,26 +71,20 @@ class DashBoardController extends Controller {
 
         // Create a seperate dataset for each occasion
         foreach ($appearances as $key => $appearance) {
-
-            $sortedAppearances = $appearance['memberAppearancesData'];
-
-            $firstYear = $appearance['firstYear']; 
-            $lastYear = $appearance['lastYear']; 
-
-            $firstMonth = $appearance['firstMonth']; 
-            $lastMonth = $appearance['lastMonth']; 
-            
             // Insert data into RMarkdown Script
             $this->rmarkdownService->generateMemberAppearancesRmd(
-                $firstYear, 
-                $lastYear, 
-                $firstMonth, 
-                $lastMonth, 
-                $sortedAppearances, 
+                $appearance['firstYear'],
+                $appearance['lastYear'], 
+                $appearance['firstMonth'], 
+                $appearance['lastMonth'],
+                $appearance['memberAppearancesData'],
                 $key,
                 (count($appearances) - 1) // for keeping track of function calls
             );
         }
+        // Generate individual tabs for each dataset
+        // $this->rmarkdownService->generateTabs();
+
     }
 
     public function inviteHelper() {
