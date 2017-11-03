@@ -8,6 +8,7 @@ use JWTAuth;
 // Service Classes 
 use App\Services\AppearanceService;
 use App\Services\JoinsService;
+use App\Services\RMarkdownService;
 
 // Eloquent Models
 use App\User;
@@ -18,16 +19,22 @@ class DashBoardController extends Controller {
     // Inherited Classes
     protected $appearanceService;
     protected $joinsService;
+    protected $rmarkdownService;
 
 
+    /**
+     * Constructor
+     */
     public function __construct(
         AppearanceService $appearanceService, 
-        JoinsService $joinsService 
+        JoinsService $joinsService,
+        RMarkdownService $rmarkdownService 
     ) {
 
-        $this->documentRoot = $_SERVER['DOCUMENT_ROOT'];
+        // Inherited Classes
         $this->appearanceService = $appearanceService;
         $this->joinsService = $joinsService;
+        $this->rmarkdownService = $rmarkdownService;
 
         // authentication 
         $this->middleware('jwt.auth', [
@@ -36,17 +43,6 @@ class DashBoardController extends Controller {
                 'spaceAppearances',
             ]   
         ]);
-
-    }
-
-   // format values to print in R array c(1,2,3,4....)
-   private function extractDataFromArray($data) {
-        $extractedData = "";
-        foreach ($data as $datum) {
-            // format 1,2,3,...
-            $extractedData = ltrim($extractedData.','.$datum, ',');
-        }
-        return $extractedData;
     }
 
     /**
@@ -93,67 +89,6 @@ class DashBoardController extends Controller {
 
 
     /**
-     * Generate Title to appearance .Rmd
-     */
-    private function generateMemberAppearancesStartRmd(
-        $firstYear, 
-        $lastYear
-    ) {
-        $fp = fopen("$this->documentRoot/test/bar.Rmd", 'wb');
-
-        function begin($firstY, $lastY) {
-            $startFile =
-            "---\n"
-            ."title: \"Appearances!? {$firstY}-{$lastY}\"\n"
-            ."output:\n"
-            ."flexdashboard::flex_dashboard:\n"
-            ."    orientation: rows\n"
-            ."    social: menu\n"
-            ."---\n"
-            ."```{r setup, include=FALSE}\n"
-            ."library(flexdashboard)\n"
-            ."library(dygraphs)\n"
-            ."library(xts)\n";
-            return $startFile;
-        }
-
-        $firstBlock = begin($firstYear, $lastYear);
-        fwrite($fp, $firstBlock, strlen($firstBlock) );
-        fclose($fp);
-    }
-
-
-    /**
-     * Generate data to appearance .Rmd
-     */
-    private function generateMemberAppearancesRmd(
-        $firstYear, 
-        $lastYear, 
-        $firstMonth, 
-        $lastMonth, 
-        $appearances, 
-        $key
-    ) {
-        $fp = fopen("$this->documentRoot/test/bar.Rmd", 'ab');
-        // keep track of function calls
-        static $count; 
-        $lastCall = 5;
-
-        $appendString = 
-        "$key.ByMonthYear <- c(".$this->extractDataFromArray($appearances)."\n"
-        ."$key.TS <- ts( $key.ByMonthYear, start = c({$firstYear},{$firstMonth}), end = c({$lastYear},{$lastMonth}), frequency = 12)\n"
-        ."$key.TS_AS_XTS <- as.xts($key.TS)\n\n";
-        $count = $count + 1;
-
-        fwrite($fp, $appendString, strlen($appendString) );
-        // on last function call 
-        if ($count == $lastCall) {
-            fwrite($fp, "```\n", strlen("$```\n") );
-        }
-        fclose($fp);
-    }
-
-    /**
      * Get data and write R markdown file.
      * @param workspace.id 
      * @return Illuminate\Support\Facades\Response::class
@@ -179,11 +114,16 @@ class DashBoardController extends Controller {
     }
 
     /**
-     * Get all appearances 
+     * Generate Appearances visualizations using RMarkdown 
      * @param $spaceId
      * @return Illuminate\Support\Facades\Response::class
      */
     public function Appearances($spaceId) {
+
+        // Write head of RMarkdown File
+        $this->rmarkdownService->generateTitle("Tim");
+
+        // Get appearances from database by occasion
         $appearances = array(
             'all' => $this->appearanceService->getAllAppearances($spaceId), 
             'event' => $this->appearanceService->getEventAppearances($spaceId),
@@ -193,8 +133,8 @@ class DashBoardController extends Controller {
             'invite' => $this->appearanceService->getNonEventAppearances($spaceId, 'invite')
         );
 
-        //$n = count($appearances);
-        $count = 0;
+
+        // Create a seperate dataset for each occasion
         foreach ($appearances as $key => $appearance) {
             $n = count($appearance);
             $firstYear = $appearance[$n - 4]; 
@@ -203,24 +143,17 @@ class DashBoardController extends Controller {
             $lastMonth = $appearance[$n - 1];
             $sortedAppearances = array_slice($appearance, 0, ($n - 5));
             
-            if ($count == 0) {
-                $this->generateMemberAppearancesStartRmd(
-                    $firstYear, 
-                    $lastYear 
-                );
-                $count++;
-            } else {
-                $this->generateMemberAppearancesRmd(
-                    $firstYear, 
-                    $lastYear, 
-                    $firstMonth, 
-                    $lastMonth, 
-                    $sortedAppearances, 
-                    $key
-                );
-            }
+            // Insert data into RMarkdown Script
+            $this->rmarkdownService->generateMemberAppearancesRmd(
+                $firstYear, 
+                $lastYear, 
+                $firstMonth, 
+                $lastMonth, 
+                $sortedAppearances, 
+                $key,
+                (count($appearances) - 1) // for keeping track of function calls
+            );
         }
-
     }
 
     public function inviteHelper() {

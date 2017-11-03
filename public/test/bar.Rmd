@@ -1,5 +1,5 @@
 ---
-title: "Appearances!? 2015-2019"
+title: "Tim"
 output:
 flexdashboard::flex_dashboard:
     orientation: rows
@@ -9,6 +9,10 @@ flexdashboard::flex_dashboard:
 library(flexdashboard)
 library(dygraphs)
 library(xts)
+all.ByMonthYear <- c(1,22,30,30,38,32,36,32,26,28,30,26,31,34,37,43,28,22,48,37,35,37,29,37,27,36,27,36,26,44,29,31,39,21,40,22,38,36,30,33,31,34,32,33,33,28,21,23
+all.TS <- ts( all.ByMonthYear, start = c(2015,10), end = c(2019,10), frequency = 12)
+all.TS_AS_XTS <- as.xts(all.TS)
+
 event.ByMonthYear <- c(1,6,10,12,8,6,14,8,6,5,12,6,6,14,14,11,5,20,15,12,11,8,5,4,17,4,14,9,17,1,5,9,7,11,7,11,14,8,10,11,13,12,12,10,5,4,1
 event.TS <- ts( event.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
 event.TS_AS_XTS <- as.xts(event.TS)
@@ -24,9 +28,5 @@ booking.TS_AS_XTS <- as.xts(booking.TS)
 student.ByMonthYear <- c(4,7,4,8,6,6,4,4,6,6,4,7,4,5,5,4,6,6,2,5,6,4,8,2,8,8,9,9,3,10,13,9,4,4,5,5,1,5,9,4,7,3,7,7,5,2,6
 student.TS <- ts( student.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
 student.TS_AS_XTS <- as.xts(student.TS)
-
-invite.ByMonthYear <- c(6,4,7,11,6,2,7,2,11,7,5,7,8,10,5,6,1,2,9,4,9,6,6,8,5,7,7,3,10,5,4,9,3,8,2,4,4,6,5,3,5,6,2,6,7,2,5
-invite.TS <- ts( invite.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
-invite.TS_AS_XTS <- as.xts(invite.TS)
 
 ```
