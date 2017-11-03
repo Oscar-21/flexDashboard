@@ -52,17 +52,6 @@ class DashBoardController extends Controller {
         $firstMonth = $dataAndDates['firstMonth']; 
         $lastMonth = $dataAndDates['lastMonth']; 
 
-        // $lastYear = $memberSignUpData[$n - 3];
-        // $firstMonth = $memberSignUpData[$n - 2];
-        // $lastMonth = $memberSignUpData[$n - 1];
-
-        // $n = count($memberSignUpData);
-        // $sortedMemberData = array_slice($memberSignUpData, 0, ($n - 5));
-        // $firstYear = $memberSignUpData[$n - 4]; 
-        // $lastYear = $memberSignUpData[$n - 3];
-        // $firstMonth = $memberSignUpData[$n - 2];
-        // $lastMonth = $memberSignUpData[$n - 1];
-
         $this->rmarkdownService->generateMemberJoinsRmd(
           $firstYear, 
           $lastYear, 
@@ -80,7 +69,7 @@ class DashBoardController extends Controller {
     public function Appearances($spaceId) {
 
         // Write head of RMarkdown File
-        $this->rmarkdownService->generateTitle("Tim");
+        $this->rmarkdownService->generateTitle("Appearances");
 
         // Get appearances from database by occasion
         $appearances = array(
@@ -92,15 +81,16 @@ class DashBoardController extends Controller {
             'invite' => $this->appearanceService->getNonEventAppearances($spaceId, 'invite')
         );
 
-
         // Create a seperate dataset for each occasion
         foreach ($appearances as $key => $appearance) {
-            $n = count($appearance);
-            $sortedAppearances = array_slice($appearance, 0, ($n - 5));
-            $firstYear = $appearance[$n - 4]; 
-            $lastYear = $appearance[$n - 3];
-            $firstMonth = $appearance[$n - 2];
-            $lastMonth = $appearance[$n - 1];
+
+            $sortedAppearances = $appearance['memberAppearancesData'];
+
+            $firstYear = $appearance['firstYear']; 
+            $lastYear = $appearance['lastYear']; 
+
+            $firstMonth = $appearance['firstMonth']; 
+            $lastMonth = $appearance['lastMonth']; 
             
             // Insert data into RMarkdown Script
             $this->rmarkdownService->generateMemberAppearancesRmd(

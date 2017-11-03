@@ -21,28 +21,29 @@ class AppearanceService {
 
             $yearSpan = (int)$lastYear - (int)$firstYear;
 
-            $res = array();
+            $appearances = array();
             for ($year = 0; $year <= $yearSpan; $year++) {
                 for ($month = 1; $month <= 12; $month++) {
-                    $joinsForMonth = count(Appearance::
+                    $appearancesForMonth = count(Appearance::
                                            where('spaceID', $spaceId)
                                            ->whereYear('created_at', ( $firstYear + $year ) )
                                            ->whereMonth('created_at', ( $month ) )
                                            ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) { 
-                        array_push($res, $joinsForMonth);
+                    if ( !empty($appearancesForMonth) ) { 
+                        array_push($appearances, $appearancesForMonth);
                     }
                 }        
             }
-            array_push(
-                $res, 
-                $firstYear, 
-                $lastYear, 
-                $firstMonth,
-                $lastMonth 
+            return (
+                array (
+                    'memberAppearancesData' => $appearances,
+                    'firstYear' => $firstYear, 
+                    'lastYear' => $lastYear, 
+                    'firstMonth' => $firstMonth,
+                    'lastMonth' => $lastMonth 
+                )
             );
-            return $res;
         }
     }
 
@@ -67,29 +68,30 @@ class AppearanceService {
 
             $yearSpan = (int)$lastYear - (int)$firstYear;
 
-            $res = array();
+            $appearances = array();
             for ($year = 0; $year <= $yearSpan; $year++) {
                 for ($month = 1; $month <= 12; $month++) {
-                    $joinsForMonth = count(Appearance::
+                    $appearancesForMonth = count(Appearance::
                                            where('spaceID', $spaceId)
                                            ->where('eventID', '!=', NULL)
                                            ->whereYear('created_at', ( $firstYear + $year ) )
                                            ->whereMonth('created_at', ( $month ) )
                                            ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) {
-                        array_push($res, $joinsForMonth);
+                    if ( !empty($appearancesForMonth) ) { 
+                        array_push($appearances, $appearancesForMonth);
                     }
                 }        
             }
-            array_push(
-                $res, 
-                $firstYear, 
-                $lastYear, 
-                $firstMonth,
-                $lastMonth 
+            return (
+                array (
+                    'memberAppearancesData' => $appearances,
+                    'firstYear' => $firstYear, 
+                    'lastYear' => $lastYear, 
+                    'firstMonth' => $firstMonth,
+                    'lastMonth' => $lastMonth 
+                )
             );
-            return $res;
 
         }
 
@@ -111,30 +113,30 @@ class AppearanceService {
 
             $yearSpan = (int)$lastYear - (int)$firstYear;
 
-            $res = array();
+            $appearances = array();
             for ($year = 0; $year <= $yearSpan; $year++) {
                 for ($month = 1; $month <= 12; $month++) {
-                    $joinsForMonth = count(Appearance::
+                    $appearancesForMonth = count(Appearance::
                                           where('spaceID', $spaceId)
                                           ->where('occasion', $occasion)
                                           ->whereYear('created_at', ( $firstYear + $year ) )
                                           ->whereMonth('created_at', ( $month ) )
                                           ->get()
                                      ); 
-                    if ( !empty($joinsForMonth) ) { 
-                        array_push($res, $joinsForMonth);
+                    if ( !empty($appearancesForMonth) ) { 
+                        array_push($appearances, $appearancesForMonth);
                     }
                 }        
             }
-            array_push(
-                $res, 
-                $firstYear, 
-                $lastYear, 
-                $firstMonth,
-                $lastMonth 
+            return (
+                array (
+                    'memberAppearancesData' => $appearances,
+                    'firstYear' => $firstYear, 
+                    'lastYear' => $lastYear, 
+                    'firstMonth' => $firstMonth,
+                    'lastMonth' => $lastMonth 
+                )
             );
-            return $res;
         }
     }
-
 }
