@@ -1,6 +1,9 @@
 <?php
 namespace App\Services;
 use Response;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 
 class RMarkdownService {
 
@@ -13,13 +16,25 @@ class RMarkdownService {
         $this->documentRoot = $_SERVER['DOCUMENT_ROOT'];
     }
 
+    public function batch($file) {
+        $process = new Process("R CMD BATCH {$file}.R");
+        $process->run();
+        
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+             throw new ProcessFailedException($process);
+        }
+        echo $process->getOutput();
+    }
+        
+
     /**
      * Generate Head of RMarkdown File
      * @param $title, 
      * @return void
      */
     public function generateTitle($title) {
-        $fp = fopen("$this->documentRoot/test/bar.Rmd", 'wb');
+        $fp = fopen("$this->documentRoot/bar.Rmd", 'wb');
         $HeadOfRmdFile =
         "---\n"
         ."title: \"{$title}\"\n"
@@ -62,7 +77,7 @@ class RMarkdownService {
 
     {
         // Open RMarkdown file to append
-        $fp = fopen("$this->documentRoot/test/bar.Rmd", 'ab');
+        $fp = fopen("$this->documentRoot/bar.Rmd", 'ab');
 
         static $count; // to keep track of function calls
         static $KEYS = [];
@@ -110,6 +125,7 @@ class RMarkdownService {
 
         }
         fclose($fp);
+        $this->batch('bar');
     }    
 
     /**
@@ -122,7 +138,7 @@ class RMarkdownService {
         $lastMonth, 
         $data
     ) {
-        $fp = fopen("$this->documentRoot/test/foo.Rmd", 'wb');
+        $fp = fopen("$this->documentRoot/foo.Rmd", 'wb');
 
         // R markdown formatted string
         $outputString = 
@@ -151,6 +167,7 @@ class RMarkdownService {
             ."dyRangeSelector()\n"  
             ."```\n";
         fwrite($fp, $outputString, strlen($outputString) );
+        $this->batch('foo');
         fclose($fp);
     }
 

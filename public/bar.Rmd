@@ -1,0 +1,64 @@
+---
+title: "Appearances!"
+output:
+flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dygraphs)
+library(xts)
+all.ByMonthYear <- c(1,22,30,30,38,32,36,32,26,28,30,26,31,34,37,43,28,22,48,37,35,37,29,37,27,36,27,36,26,44,29,31,39,21,40,22,38,36,30,33,31,34,32,33,33,28,21,23,31
+all.TS <- ts( all.ByMonthYear, start = c(2015,10), end = c(2019,10), frequency = 12)
+all.TS_AS_XTS <- as.xts(all.TS)
+
+event.ByMonthYear <- c(1,6,10,12,8,6,14,8,6,5,12,6,6,14,14,11,5,20,15,12,11,8,5,4,17,4,14,9,17,1,5,9,7,11,7,11,14,8,10,11,13,12,12,10,5,4,1,11
+event.TS <- ts( event.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
+event.TS_AS_XTS <- as.xts(event.TS)
+
+work.ByMonthYear <- c(6,5,5,5,5,11,4,4,3,5,2,7,6,4,10,3,6,9,5,7,6,6,11,8,4,3,2,3,10,9,5,7,5,7,3,9,7,6,6,4,4,3,6,6,3,4,4,5
+work.TS <- ts( work.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
+work.TS_AS_XTS <- as.xts(work.TS)
+
+booking.ByMonthYear <- c(1,5,8,4,2,7,11,3,8,2,7,3,4,10,4,9,4,4,11,6,7,5,5,7,5,2,5,4,2,4,4,4,5,2,10,5,9,10,5,3,9,5,8,6,4,8,9,7,6
+booking.TS <- ts( booking.ByMonthYear, start = c(2015,10), end = c(2019,10), frequency = 12)
+booking.TS_AS_XTS <- as.xts(booking.TS)
+
+student.ByMonthYear <- c(4,7,4,8,6,6,4,4,6,6,4,7,4,5,5,4,6,6,2,5,6,4,8,2,8,8,9,9,3,10,13,9,4,4,5,5,1,5,9,4,7,3,7,7,5,2,6,5
+student.TS <- ts( student.ByMonthYear, start = c(2015,11), end = c(2019,10), frequency = 12)
+student.TS_AS_XTS <- as.xts(student.TS)
+
+```
+Row {.tabset .tabset-fade}
+-------------------------------------
+### alls!
+```{r}
+dygraph(allTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### events!
+```{r}
+dygraph(eventTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### works!
+```{r}
+dygraph(workTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### bookings!
+```{r}
+dygraph(bookingTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
+### students!
+```{r}
+dygraph(studentTS_AS_XTS) %>%
+dyOptions(drawPoints = TRUE, pointSize = 2) %>%
+dyRangeSelector()
+```
