@@ -16,16 +16,6 @@ class RMarkdownService {
         $this->documentRoot = $_SERVER['DOCUMENT_ROOT'];
     }
 
-    public function batch($file) {
-        $process = new Process("R CMD BATCH {$file}.R");
-        $process->run();
-        
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-             throw new ProcessFailedException($process);
-        }
-        echo $process->getOutput();
-    }
         
 
     /**
@@ -125,7 +115,6 @@ class RMarkdownService {
 
         }
         fclose($fp);
-        $this->batch('bar');
     }    
 
     /**
@@ -167,7 +156,6 @@ class RMarkdownService {
             ."dyRangeSelector()\n"  
             ."```\n";
         fwrite($fp, $outputString, strlen($outputString) );
-        $this->batch('foo');
         fclose($fp);
     }
 
